@@ -13,7 +13,6 @@ public class TextScroller : MonoBehaviour
 
     public int framesPerCharacter = 4;
 
-    // Start is called before the first frame update
     private void Start()
     {
         _fullTextValue = "";
@@ -21,8 +20,7 @@ public class TextScroller : MonoBehaviour
         _textComponentToScroll.text = "";
         _timeScrolling = 0;
     }
-
-    // Update is called once per frame
+    
     private void Update()
     {
        int charactersToShow = Math.Min(_fullTextValue.Length, (Time.frameCount - _timeScrolling) / framesPerCharacter);
