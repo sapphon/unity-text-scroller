@@ -7,29 +7,38 @@ using UnityEngine.UI;
 public class TextScroller : MonoBehaviour
 {
 
-    private Text _textComponentToScroll;
-    private int _timeScrolling;
-    private string _fullTextValue;
+    private string fullTextValue;
+    private float showingCharacters;
+	
+    public Text textComponentToScroll;
+    public float scrollingSpeed = 20f;
 
-    public int framesPerCharacter = 4;
-
-    private void Start()
+    void Awake()
     {
-        _fullTextValue = "";
-        _textComponentToScroll = GetComponent<Text>();
-        _textComponentToScroll.text = "";
-        _timeScrolling = 0;
+        fullTextValue = "";
+        if (this.textComponentToScroll == null)
+        {
+            this.textComponentToScroll = GetComponent<Text>();
+        }
+        textComponentToScroll.text = "";
+    }
+
+    void Start()
+    {
+    }
+
+    void Update()
+    {
+        showingCharacters = Math.Min(fullTextValue.Length, showingCharacters + Time.deltaTime * scrollingSpeed);
+        textComponentToScroll.text = fullTextValue.Substring(0, (int)showingCharacters);
+
     }
     
-    private void Update()
-    {
-       int charactersToShow = Math.Min(_fullTextValue.Length, (Time.frameCount - _timeScrolling) / framesPerCharacter);
-       _textComponentToScroll.text = _fullTextValue.Substring(0, charactersToShow);
-    }
-    
 
-    public void SetText(string textToScroll) {
-        _fullTextValue = textToScroll;
-        _timeScrolling = Time.frameCount;
+    public void SetText(string textToScroll)
+    {
+        if (fullTextValue == textToScroll) return;
+        showingCharacters = 0;
+        fullTextValue = textToScroll;
     }
 }
